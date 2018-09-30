@@ -4,7 +4,8 @@ PYTHON_LIB_DIR = -L"/usr/lib/x86_64-linux-gnu" -L"/usr/lib/python3/dist-packages
 PYTHON_LIBS = -lpython3.5m -lnpymath -lm
 PYTHON_INC = -I"/usr/include/python3.5m"
 
-INC_DIR = $(PYTHON_INC)  -I"/home/nvidia/.local/lib/python3.5/site-packages/numpy/core/include" -I"/usr/local/include"
+INC_DIR = $(PYTHON_INC)  -I"/home/nvidia/.local/lib/python3.5/site-packages/numpy/core/include" \
+	-I"/usr/local/include" -I"/home/lyyiangang/lyy/cpp_python_wrapper/zeromq-4.2.3/include"
 
 CXXFLAGS = -Wall -std=c++14  $(INC_DIR) 
 
@@ -21,10 +22,11 @@ endif
 LIB_OPENCV= `pkg-config opencv --cflags --libs` -lcrypt 
 
 
-LIB_DIR= -L"/usr/lib" -L"/usr/local/lib" $(PYTHON_LIB_DIR)
+LIB_DIR= -L"/usr/lib" -L"/usr/local/lib" $(PYTHON_LIB_DIR) -L"/home/lyyiangang/lyy/cpp_python_wrapper/zeromq-4.2.3/src/.libs" \
+	-L"/home/lyyiangang/lyy/cpp_python_wrapper/zeromq-4.2.3/src/.libs/"
 
 
-COMMON_LIBS = -lrt -ldl -lpthread 
+COMMON_LIBS = -lrt -ldl -lpthread -lzmq
 LIBS  = $(COMMON_LIBS) $(LIB_OPENCV) $(PYTHON_LIBS)
 
 TARGET = test.out
@@ -36,6 +38,10 @@ OBJ = $(C_SRC:.c=.o) $(CC_SRC:.cc=.o) $(CPP_SRC:.cpp=.o)
 
 $(TARGET): $(OBJ)
 	$(CXX)  -o $@ $^  $(CXXFLAGS) $(LIBS) $(LIB_DIR)
+
+zmq:
+	$(CXX) -o hwclient hwclient.c $(CXXFLAGS) $(LIBS) $(LIB_DIR)
+	$(CXX) -o hwserver2 hwserver2.c $(CXXFLAGS) $(LIBS) $(LIB_DIR)
 
 
 .PHONY:clean
