@@ -30,15 +30,16 @@ LIB_DIR= -L"/usr/lib" -L"/usr/local/lib" $(PYTHON_LIB_DIR) -L"/home/lyyiangang/l
 COMMON_LIBS = -lrt -ldl -lpthread -lzmq `pkg-config --cflags --libs protobuf` 
 LIBS  = $(COMMON_LIBS) $(LIB_OPENCV) $(PYTHON_LIBS)
 
-TARGET = test.out
+#TARGET = test.out
 
-C_SRC = $(wildcard ./*.c) 
-CC_SRC = $(wildcard ./*.cc)
-CPP_SRC = $(wildcard ./*.cpp)
-OBJ = $(C_SRC:.c=.o) $(CC_SRC:.cc=.o) $(CPP_SRC:.cpp=.o) 
+#C_SRC = $(wildcard ./*.c) 
+#CC_SRC = $(wildcard ./*.cc)
+#CPP_SRC = $(wildcard ./*.cpp)
+#OBJ = $(C_SRC:.c=.o) $(CC_SRC:.cc=.o) $(CPP_SRC:.cpp=.o) 
 
-$(TARGET): $(OBJ)
-	$(CXX)  -o $@ $^  $(CXXFLAGS) $(LIBS) $(LIB_DIR)
+#$(TARGET): $(OBJ)
+#	$(CXX)  -o $@ $^  $(CXXFLAGS) $(LIBS) $(LIB_DIR)
+all:zmq cvzmq proto_zmq_cpp
 
 zmq:
 	$(CXX) -o hwclient.out hwclient.c $(CXXFLAGS) $(LIBS) $(LIB_DIR)
@@ -51,7 +52,7 @@ proto_zmq_cpp: proto_zmq_client.c proto_zmq_server.py cpp_py_exchange_data.proto
 	protoc --cpp_out=. --python_out=. cpp_py_exchange_data.proto
 	$(CXX) -o proto_zmq_client.out proto_zmq_client.c cpp_py_exchange_data.pb.cc $(CXXFLAGS) $(LIBS) $(LIB_DIR)
 
-.PHONY:clean
+#.PHONY:clean
 
 clean:
-	rm -f $(OBJ) $(TARGET)    
+	rm -f *.out
