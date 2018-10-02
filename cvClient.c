@@ -29,8 +29,10 @@ int main (void)
     std::cout<<"get tmpBuffer:"<<tmpBuffer<<std::endl;
 
     // int nEle = img.cols * img.rows * img.channels() ;
-    // zmq_send(requester, img.data, nEle * sizeof(uchar)/sizeof(char), 0);
-    // std::cout<<"send "<<img.data[0]<<","<<img.data[1]<<","<<img.data[2]<<std::endl;
+    // img = img.reshape(1,1);
+    // std::vector<uchar> flattenMat = img;
+    // std::cout<<"send "<<flattenMat[0]<<","<<flattenMat[1]<<","<<flattenMat[2]<<std::endl;
+    // zmq_send(requester, flattenMat.data(), nEle * sizeof(uchar)/sizeof(char), 0);
 
 
     std::cout<<"send buffer"<<std::endl;

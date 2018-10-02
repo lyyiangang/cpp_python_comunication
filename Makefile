@@ -6,7 +6,7 @@ PYTHON_INC = -I"/usr/include/python3.5m"
 
 INC_DIR = $(PYTHON_INC)  -I"/home/nvidia/.local/lib/python3.5/site-packages/numpy/core/include" \
 	-I"/usr/local/include" -I"/home/lyyiangang/lyy/zeromq-4.2.3/include" \
-	-I"/usr/local/include/opencv2"
+	-I"/usr/local/include/opencv2" -I"./"
 
 CXXFLAGS = -Wall -std=c++14  $(INC_DIR) 
 
@@ -27,7 +27,7 @@ LIB_DIR= -L"/usr/lib" -L"/usr/local/lib" $(PYTHON_LIB_DIR) -L"/home/lyyiangang/l
 	-L"/home/lyyiangang/lyy/zeromq-4.2.3/src/.libs/"
 
 
-COMMON_LIBS = -lrt -ldl -lpthread -lzmq
+COMMON_LIBS = -lrt -ldl -lpthread -lzmq `pkg-config --cflags --libs protobuf` 
 LIBS  = $(COMMON_LIBS) $(LIB_OPENCV) $(PYTHON_LIBS)
 
 TARGET = test.out
@@ -41,12 +41,15 @@ $(TARGET): $(OBJ)
 	$(CXX)  -o $@ $^  $(CXXFLAGS) $(LIBS) $(LIB_DIR)
 
 zmq:
-	$(CXX) -o hwclient hwclient.c $(CXXFLAGS) $(LIBS) $(LIB_DIR)
-	$(CXX) -o hwserver2 hwserver2.c $(CXXFLAGS) $(LIBS) $(LIB_DIR)
+	$(CXX) -o hwclient.out hwclient.c $(CXXFLAGS) $(LIBS) $(LIB_DIR)
+	$(CXX) -o hwserver2.out hwserver2.c $(CXXFLAGS) $(LIBS) $(LIB_DIR)
 
 cvzmq:
-	$(CXX) -o cvClient cvClient.c $(CXXFLAGS) $(LIBS) $(LIB_DIR)
+	$(CXX) -o cvClient.out cvClient.c $(CXXFLAGS) $(LIBS) $(LIB_DIR)
 
+proto_zmq_cpp: proto_zmq_client.c proto_zmq_server.py cpp_py_exchange_data.proto
+	protoc --cpp_out=. --python_out=. cpp_py_exchange_data.proto
+	$(CXX) -o proto_zmq_client.out proto_zmq_client.c cpp_py_exchange_data.pb.cc $(CXXFLAGS) $(LIBS) $(LIB_DIR)
 
 .PHONY:clean
 
