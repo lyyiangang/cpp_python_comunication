@@ -23,6 +23,7 @@ msgToClient = cpp_py_exchange_data_pb2.MsgToClient()
 msgToClient.width = msgToServer.width
 msgToClient.height = msgToServer.height
 msgToClient.actionType = "this is action type string sent from server"
+print('server: buffer size:{}'.format(msgToClient.ByteSize()))
 socket.send(msgToClient.SerializeToString())
 
 # socket.send(b't')

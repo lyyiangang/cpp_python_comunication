@@ -1,5 +1,5 @@
 //https://learning-0mq-with-pyzmq.readthedocs.io/en/latest/pyzmq/patterns/client_server.html
-//  Hello World client
+//  Hello World client, cppzmq:https://github.com/zeromq/cppzmq/blob/master/zmq.hpp
 #include <zmq.h>
 #include <string.h>
 #include <stdio.h>
@@ -33,13 +33,16 @@ int main (void)
     void *requester = zmq_socket (context, ZMQ_REQ);
     zmq_connect (requester, "tcp://localhost:5555");
 
+    std::cout<<"begin send msg"<<std::endl;
     zmq_send(requester, byteStr.c_str(), byteStr.size(), 0);
 
 
-
-    const int bufferSize = 1000000;
+    int bufferSize = 1000000;
     char reciveBuffer[bufferSize];
+
+    std::cout<<"begin recv msg"<<std::endl;
     zmq_recv(requester, reciveBuffer, bufferSize, 0);
+    std::cout<<"end recv msg"<<std::endl;
     yy::MsgToClient msgToClient;
     std::cout<<"before populate data, byte size is:"<<msgToClient.ByteSize()<<std::endl;
     msgToClient.ParseFromString(std::string(reciveBuffer, bufferSize));
