@@ -52,7 +52,11 @@ proto_zmq_cpp: proto_zmq_client.c proto_zmq_server.py cpp_py_exchange_data.proto
 	protoc --cpp_out=. --python_out=. cpp_py_exchange_data.proto
 	$(CXX) -o proto_zmq_client.out proto_zmq_client.c cpp_py_exchange_data.pb.cc $(CXXFLAGS) $(LIBS) $(LIB_DIR)
 
-#.PHONY:clean
+cpp_socket_client_and_server: cpp_socket_client.c cpp_socket_server.c
+	@echo generate cpp_socket_client.out and cpp_socket_server.out
+	$(CXX) -o cpp_socket_client.out cpp_socket_client.c $(CXXFLAGS) $(LIBS) $(LIB_DIR)
+	$(CXX) -o cpp_socket_server.out cpp_socket_server.c $(CXXFLAGS) $(LIBS) $(LIB_DIR)
 
+.PHONY:clean
 clean:
 	rm -f *.out
