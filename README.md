@@ -11,5 +11,5 @@ learn how to send and receive data via port.
 server.
 3. ```proto_zmq_server.py``` and ```proto_zmq_client.c``` show how to send message via protocol buffer library. 
 
-4. ```cpp_call_python_tf_example.cpp``` show how to do data exchange between python and cpp. In this 
-example, cpp code will load ```py_test.py``` and invoke it's inner function.
+4. ```cpp_call_python_tf_example.cpp``` show how to do data exchange between python and cpp. In this example, cpp code will load ```py_test.py``` and invoke it's inner function.
+5. ```cpp_socket_client.c``` and ```cpp_socket_server.c``` show how to operate socket via basic c api.
